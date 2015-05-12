@@ -80,17 +80,18 @@ NPError NP_GetEntryPoints(NPPluginFuncs* pluginFuncs)
     if (pluginFuncs->size < (offsetof(NPPluginFuncs, setvalue) + sizeof(void*)))
         return NPERR_INVALID_FUNCTABLE_ERROR;
     
+    /* the minimum set of functions that must be provided */
     pluginFuncs->newp = NPP_New;
     pluginFuncs->destroy = NPP_Destroy;
     pluginFuncs->setwindow = NPP_SetWindow;
-    //pluginFuncs->newstream = NPP_NewStream;
-    //pluginFuncs->destroystream = NPP_DestroyStream;
-    //pluginFuncs->asfile = NPP_StreamAsFile;
-    //pluginFuncs->writeready = NPP_WriteReady;
-    //pluginFuncs->write = (NPP_WriteProcPtr)NPP_Write;
-    //pluginFuncs->print = NPP_Print;
+    pluginFuncs->newstream = NPP_NewStream;
+    pluginFuncs->destroystream = NPP_DestroyStream;
+    pluginFuncs->asfile = NPP_StreamAsFile;
+    pluginFuncs->writeready = NPP_WriteReady;
+    pluginFuncs->write = (NPP_WriteProcPtr)NPP_Write;
+    pluginFuncs->print = NPP_Print;
     pluginFuncs->event = NPP_HandleEvent;
-    //pluginFuncs->urlnotify = NPP_URLNotify;
+    pluginFuncs->urlnotify = NPP_URLNotify;
     pluginFuncs->getvalue = NPP_GetValue;
     pluginFuncs->setvalue = NPP_SetValue;
     
