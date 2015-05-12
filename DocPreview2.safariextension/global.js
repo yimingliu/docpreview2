@@ -91,7 +91,7 @@ function getDocPreviewPlugin()
         var doc = toolbarWindow.document;
         
         var plugin = doc.getElementById("docpreview2");
-        if (plugin && plugin.foo)
+        if (plugin && plugin.helloworld)
             return plugin;
         else
             console.error("Plugin failed to initialize");

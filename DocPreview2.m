@@ -224,9 +224,8 @@ static NPUTF8* createCStringFromNPVariant(const NPVariant* variant)
 static bool
 invoke(NPObject* obj, NPIdentifier methodName, const NPVariant *args, uint32_t argCount, NPVariant *result) {
     char *name = browser->utf8fromidentifier(methodName);
-    static NPVariant v, r;
     if(name) {
-        if(!strcmp(name, "foo")) {
+        if(!strcmp(name, "helloworld")) {
             return invokeDefault(obj, args, argCount, result);
         }
         else if (!strcmp(name, "doc2html"))
@@ -266,7 +265,7 @@ invoke(NPObject* obj, NPIdentifier methodName, const NPVariant *args, uint32_t a
             browser->setexception(obj, "not a string passed into doc2html");
             return false;
         }
-        else if(!strcmp(name, "callback")) {
+        /*else if(!strcmp(name, "callback")) {
             if(argCount == 1 && args[0].type == NPVariantType_Object) {
                 //static NPVariant v, r;
                 NSString *test = @"Hello world from Objective-C type!";
@@ -275,11 +274,10 @@ invoke(NPObject* obj, NPIdentifier methodName, const NPVariant *args, uint32_t a
                 
                 memcpy(txt, kHello, [test length]);
                 STRINGN_TO_NPVARIANT(txt, [test length], v);
-                /* INT32_TO_NPVARIANT(42, v); */
                 if(browser->invokeDefault(((ExtendedNPObject*)obj)->npp, NPVARIANT_TO_OBJECT(args[0]), &v, 1, &r))
                     return invokeDefault(obj, args, argCount, result);
             }
-        }
+        }*/
     }
     /* aim exception handling */
     browser->setexception(obj, "exception during invocation");
