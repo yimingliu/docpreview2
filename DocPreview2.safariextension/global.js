@@ -94,11 +94,11 @@ function getDocPreviewPlugin()
         if (plugin && plugin.helloworld)
             return plugin;
         else
-            console.error("Plugin failed to initialize");
+            console.error("DocPreview NPAPI plugin failed to initialize");
     }
     catch(e)
     {
-        console.error("Failed to initialize due to exception", e);
+        console.error("DocPreview NPAPI plugin failed to initialize due to exception", e);
     }
     return null;
     
@@ -120,7 +120,7 @@ function doc2html(doc)
     }
     else
     {
-        console.error("Conversion plugin failed to load");
+        console.error("DocPreview NPAPI plugin failed to load");
     }
     return null;
     
@@ -147,10 +147,9 @@ function handleRetrieveError(request, uri)
     console.error("Failed to retrieve ", uri, " with code ", request.status);
 }
 
-function processClientRequest(msgEvent) {
-
-}
-
+//function processClientRequest(msgEvent) {
+//
+//}
 
 function handleContextMenu(event)
 {
@@ -181,14 +180,14 @@ function handleContextMenu(event)
             }
             if (doc_type)
                 event.contextMenu.appendContextMenuItem("preview", "Preview this " + doc_type + " document");
-            else
-                console.info("Not a supported document type");
+//            else
+//                console.info("Not a supported document type");
         }
-        else
-        {
-            console.info("Context Fail");
-            console.info(event.target);
-        }
+//        else
+//        {
+//            console.info("Wasn't a click on a link");
+//            console.info(event.target);
+//        }
         
     }    
 }
@@ -208,7 +207,7 @@ function performCommand(event) {
 
 function globalSetup()
 {
-    safari.application.addEventListener("message",processClientRequest,false);
+    //safari.application.addEventListener("message",processClientRequest,false);
     safari.application.addEventListener("contextmenu", handleContextMenu, false);
     safari.application.addEventListener("command", performCommand, false);
     //safari.extension.settings.addEventListener("change", settingChange, false);

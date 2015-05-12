@@ -1,19 +1,14 @@
-function handleExtensionMessage(msg_event) {
-    
-    if (window.top === window)
-    {
-        if (msg_event.name === "html_output")
-        {
-            var html = msg_event.message;
-            //console.log(html);
-            /*
-            document.open();
-            document.write(html);
-            document.close();*/
-        }
-    }
-    
-}
+//function handleExtensionMessage(msg_event) {
+//    
+//    if (window.top === window)
+//    {
+//        if (msg_event.name === "html_output")
+//        {
+//
+//        }
+//    }
+//    
+//}
 
 function extractURI(target)
 {
@@ -35,7 +30,7 @@ function handleContextMenu(event) {
 function injectedSetup()
 {
     document.addEventListener("contextmenu", handleContextMenu, false);
-    safari.self.addEventListener("message", handleExtensionMessage, false);
+    //safari.self.addEventListener("message", handleExtensionMessage, false);
 }
 
 if (window.top === window)
