@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>NPAPI BasicPlugin</title>
+        <style>
+            body {
+                font-family: sans-serif;
+                font-size: 11pt;
+                margin: 1em;
+            }
+        </style>
+    </head>
+    <body>
+        
+        <script type="text/javascript">
+        function handleDataFromPlugin(data)
+        {
+            try {
+                alert(data);
+            }
+            catch(e)
+            {
+                alert(e);
+            }
+        }
+        function foo() {
+            try {
+                alert(document.getElementById("basicplugin").foo());
+            }
+            catch(e) {
+                alert(e);
+            }
+        }
+        function sayHello()
+        {
+            try {
+                document.getElementById("basicplugin").callback(handleDataFromPlugin);
+            }
+            catch(e) {
+                alert(e);
+            }
+        }
+        </script>
+        <p>The BasicPlugin defines two methods in native code, and provides a scriptable object via NPAPI.  It handles the MIMEType <tt>application/x-vnd-thallos-test</tt>.
+            <ul>
+                <li>foo() should return 42.</li>
+                <li>sayHello() will ask the plugin to create a string called "Hello world!" and send it to a callback provided as the first argument -- in this case, handleDataFromPlugin, which prints the text as an alert.</li>
+            </ul>
+        </p>
+        <button onclick='foo()'>Call foo()</button>
+        <button onclick='sayHello()'>Call sayHello()</button>
+        <embed id="basicplugin" type="application/x-vnd-thallos-docpreview2" hidden="true"></embed>
+        </p>
+        
+        
+        
+    </body>
+</html>
