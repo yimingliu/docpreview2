@@ -126,7 +126,7 @@ function doc2html(doc)
     
 }
 
-function processWordDoc(request, uri, source_event)
+function processDoc(request, uri, source_event)
 {
     var doc = request.response;
     var html = doc2html(doc);
@@ -161,17 +161,33 @@ function handleContextMenu(event)
     }
     var mode = event.userInfo["mode"];
     var uri = event.userInfo["uri"];
+    var doc_type = null;
     if (mode === "menu-add")
     {
         if (uri)
         {
-            if (uri.endsWith(".doc") || uri.endsWith(".docx"))
-                event.contextMenu.appendContextMenuItem("preview", "Preview this Word document");
+            var test_uri = uri.toLowerCase();
+            if (test_uri.endsWith(".doc") || test_uri.endsWith(".docx"))
+            {
+                doc_type = "Word";
+            }
+            else if (test_uri.endsWith(".rtf"))
+            {
+                doc_type = "RTF";
+            }
+            else if (test_uri.endsWith(".odf"))
+            {
+                doc_type = "OpenOffice";
+            }
+            if (doc_type)
+                event.contextMenu.appendContextMenuItem("preview", "Preview this " + doc_type + " document");
+            else
+                console.info("Not a supported document type");
         }
         else
         {
-            console.log("Context Fail");
-            console.log(event.target);
+            console.info("Context Fail");
+            console.info(event.target);
         }
         
     }    
@@ -185,7 +201,7 @@ function performCommand(event) {
     {
         uri = event.userInfo["uri"];
         console.log("retrieving from", uri);
-        send_http_request(uri, {}, function(request, uri) { processWordDoc(request, uri, e);}, handleRetrieveError)
+        send_http_request(uri, {}, function(request, uri) { processDoc(request, uri, e);}, handleRetrieveError)
     }
    
 }

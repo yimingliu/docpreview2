@@ -17,13 +17,13 @@
 	<key>CFBundleVersion</key>
 	<string>1.0</string>
 	<key>WebPluginDescription</key>
-	<string>DocPreview</string>
+	<string>plugin for previewing Word, RTF, and ODF documents within the browser</string>
 	<key>WebPluginMIMETypes</key>
 	<dict>
 		<key>application/x-vnd-thallos-docpreview2</key>
 		<dict>
 			<key>WebPluginTypeDescription</key>
-			<string>DocPreview</string>
+			<string>vendor-specific type; used by companion browser extension</string>
 		</dict>
 	</dict>
 	<key>WebPluginName</key>

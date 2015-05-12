@@ -52,7 +52,6 @@ static void logmsg(const char *format, ...) {
         }
     }
     va_start(args, format);
-    //fprintf(s_log, "SPCHBHO-HELPER ");
     vfprintf(s_log, format, args);
     fputc('\n', s_log);
     fflush(s_log);
@@ -212,12 +211,15 @@ invokeDefault(NPObject *obj, const NPVariant *args, uint32_t argCount, NPVariant
 
 static NPUTF8* createCStringFromNPVariant(const NPVariant* variant)
 {
+    /* the output of this function needs to be freed by the caller */
     size_t length = NPVARIANT_TO_STRING(*variant).UTF8Length;
     NPUTF8* result = (NPUTF8*)malloc(length + 1);
     memcpy(result, NPVARIANT_TO_STRING(*variant).UTF8Characters, length);
     result[length] = '\0';
     return result;
 }
+
+
 
 static bool
 invoke(NPObject* obj, NPIdentifier methodName, const NPVariant *args, uint32_t argCount, NPVariant *result) {
@@ -231,27 +233,29 @@ invoke(NPObject* obj, NPIdentifier methodName, const NPVariant *args, uint32_t a
         {
             if(argCount == 1 && args[0].type == NPVariantType_String)
             {
-                NSDictionary* attrs;
-                NSError *err;
+                NSDictionary* attrs = NULL;
+                NSError *err = NULL;
                 NPUTF8* b64_c_string = createCStringFromNPVariant(&args[0]);
+                // first we decode the base64 string representation of the (possibly) binary arrayBuffer sent to the plugin
                 NSString* b64_string = [[NSString alloc] initWithUTF8String:b64_c_string];
                 NSData *decodedData = [[NSData alloc] initWithBase64EncodedString:b64_string options:0];
                 //NSAttributedString *attr_s = [[NSAttributedString alloc] initWithDocFormat:decodedData documentAttributes:0];
+                
+                // here is where the magic conversion happens
                 NSAttributedString* attr_s = [[NSAttributedString alloc] initWithData:decodedData options:nil documentAttributes:&attrs error:&err];
-                
-                //NSLog(@"%@", [attr_s HTMLString]);
-                
+                // create the HTML representation
                 NSString* html = [[attr_s HTMLString] retain];
                 const char* html_c_string = [html UTF8String];
                 unsigned long n = strlen(html_c_string);
-                char *html_output = (char *)browser->memalloc(n+1);
+                char *html_output = (char *)browser->memalloc(n+1); //browser should be responsible for freeing this
                 memcpy(html_output, html_c_string, n);
                 html_output[n]='\0';
-                result->type = NPVariantType_String;
-                //logmsg("%s\n", html_output);
+                
+                // convert back to NPVariant for browser use and copy it to the result structure for return
+                STRINGN_TO_NPVARIANT(html_output, n, *result);
+                /*result->type = NPVariantType_String;
                 result->value.stringValue.UTF8Characters = html_output;
-                result->value.stringValue.UTF8Length = n;
-                //NSLog(@"length at %ld", n);
+                result->value.stringValue.UTF8Length = n;*/
                 [html release];
                 [attr_s release];
                 [decodedData release];
@@ -319,7 +323,7 @@ NPError NPP_GetValue(NPP instance, NPPVariable variable, void *value)
             *((char **)value) = "DocPreview2";
             break;
         case NPPVpluginDescriptionString:
-            *((char **)value) = "Generates a HTML representation of Microsoft Word documents for in-browser previewing";
+            *((char **)value) = "Generates a HTML representation of Word, Rich Text, or Open Document Format documents for in-browser previewing";
             break;
         case NPPVpluginScriptableNPObject:
             so = browser->createobject(instance, &npcRefObject);
