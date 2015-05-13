@@ -1,3 +1,8 @@
+function pluginCompatibleVersion()
+{
+    return 1;
+}
+
 if (typeof String.prototype.endsWith !== 'function') {
     String.prototype.endsWith = function(suffix) {
         return this.indexOf(suffix, this.length - suffix.length) !== -1;
@@ -82,23 +87,30 @@ function UTF8ToBase64(str) {
     return window.btoa(unescape(encodeURIComponent(str)));
 }
 
+function getPluginToolbar()
+{
+    if (safari.extension.bars[0])
+        return safari.extension.bars[0];
+}
+
 function getDocPreviewPlugin()
 {
     try {
-        var toolbarWindow = safari.extension.bars[0].contentWindow;
-        //safari.extension.bars[0].show();
-        safari.extension.bars[0].hide();
+        var toolbar = getPluginToolbar();
+        var toolbarWindow = toolbar.contentWindow;
         var doc = toolbarWindow.document;
-        
         var plugin = doc.getElementById("docpreview2");
-        if (plugin && plugin.helloworld)
+        if (plugin && plugin.version)
             return plugin;
         else
-            console.error("DocPreview NPAPI plugin failed to initialize");
+        {
+            console.error("DocPreview NPAPI plugin failed to activate");
+        }
     }
     catch(e)
     {
-        console.error("DocPreview NPAPI plugin failed to initialize due to exception", e);
+        console.error("DocPreview NPAPI plugin failed to activate due to exception", e);
+        alert("Exception");
     }
     return null;
     
@@ -106,22 +118,23 @@ function getDocPreviewPlugin()
 
 function doc2html(doc)
 {
-    var b64doc;
+    var b64doc = arrayBufferToBase64(doc);;
     var html = null;
+    var toolbar = getPluginToolbar();
+    toolbar.show();
     var docpreview = getDocPreviewPlugin();
     if (docpreview)
     {
-        b64doc = arrayBufferToBase64(doc);
         //console.log(b64doc);
         html = docpreview.doc2html(b64doc);
-        //console.log(html);
-        //notifyClient(html_output, "html_output", msgEvent);
+        toolbar.hide(); // flicker the toolbar on and off to solve an issue from Safari 8.0.4 where plugins in the toolbar are not loaded unless the toolbar itself is visible.
         return html;
     }
     else
     {
         console.error("DocPreview NPAPI plugin failed to load");
     }
+    toolbar.hide();
     return null;
     
 }
@@ -144,7 +157,9 @@ function processDoc(request, uri, source_event)
 
 function handleRetrieveError(request, uri)
 {
-    console.error("Failed to retrieve ", uri, " with code ", request.status);
+    var err_msg = "Failed to retrieve " + uri + " with code " + request.status;
+    console.error(err_msg);
+    alert(err_msg);
 }
 
 //function processClientRequest(msgEvent) {
@@ -210,5 +225,19 @@ function globalSetup()
     //safari.application.addEventListener("message",processClientRequest,false);
     safari.application.addEventListener("contextmenu", handleContextMenu, false);
     safari.application.addEventListener("command", performCommand, false);
+    if (safari.extension.bars[0])
+        safari.extension.bars[0].hide();
+    var plugin = getDocPreviewPlugin();
+    if (plugin)
+    {
+        if (plugin.version() !== pluginCompatibleVersion())
+        {
+            alert("Version mismatch between DocPreview2 NPAPI plugin and the Safari extension. Please redownload and reinstall DocPreview2.");
+        }
+        else
+        {
+            console.info("Version check passed");
+        }
+    }
     //safari.extension.settings.addEventListener("change", settingChange, false);
 }

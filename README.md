@@ -19,6 +19,11 @@ Right-click a URI on any web page that links to a .doc, .docx, .rtf, or .odf fil
 
 Left-clicking the URI would download the document, as normal.
 
+### Updates
+Due to the nature of this extension, which requires both a .plugin component and an extension, users will need to return to this page to download future updates.
+
+The two components must be of the same version for proper functionality.  If there is a version mismatch, please download/rebuild the latest version from this repository.
+
 ###Technical notes
 
 - In the original DocPreview, clicking on the link itself would generate a HTML representation of the document within the browser window, and right-clicking the link/selecting from a menu would allow a download of the document.  This behavior is reversed in DocPreview2, because implementing the original behavior is far more technically challenging (this is why I was not able to update DocPreview for years, as I tried in vain to figure out how to do this).  Despite the original behavior being more user-friendly, the current model allows much more trivial implementation of the same functionality.

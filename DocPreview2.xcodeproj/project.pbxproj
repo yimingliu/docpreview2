@@ -95,9 +95,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		8D01CCC60486CAD60068D4B7 /* BasicPlugin */ = {
+		8D01CCC60486CAD60068D4B7 /* DocPreview2 */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 4FADC23308B4156C00ABE55E /* Build configuration list for PBXNativeTarget "BasicPlugin" */;
+			buildConfigurationList = 4FADC23308B4156C00ABE55E /* Build configuration list for PBXNativeTarget "DocPreview2" */;
 			buildPhases = (
 				8D01CCC90486CAD60068D4B7 /* Resources */,
 				8D01CCCB0486CAD60068D4B7 /* Sources */,
@@ -107,7 +107,7 @@
 			);
 			dependencies = (
 			);
-			name = BasicPlugin;
+			name = DocPreview2;
 			productInstallPath = "$(HOME)/Library/Bundles";
 			productName = BasicPlugin;
 			productReference = 8D01CCD20486CAD60068D4B7 /* DocPreview2.plugin */;
@@ -135,7 +135,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				8D01CCC60486CAD60068D4B7 /* BasicPlugin */,
+				8D01CCC60486CAD60068D4B7 /* DocPreview2 */,
 			);
 		};
 /* End PBXProject section */
@@ -214,7 +214,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INSTALL_PATH = "/Library/Internet Plug-Ins";
-				MACOSX_DEPLOYMENT_TARGET = "";
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				ONLY_ACTIVE_ARCH = YES;
 				PREBINDING = NO;
 			};
@@ -231,7 +231,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INSTALL_PATH = "/Library/Internet Plug-Ins";
-				MACOSX_DEPLOYMENT_TARGET = "";
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				PREBINDING = NO;
 			};
 			name = Release;
@@ -239,7 +239,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		4FADC23308B4156C00ABE55E /* Build configuration list for PBXNativeTarget "BasicPlugin" */ = {
+		4FADC23308B4156C00ABE55E /* Build configuration list for PBXNativeTarget "DocPreview2" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				4FADC23408B4156C00ABE55E /* Debug */,

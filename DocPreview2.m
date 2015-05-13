@@ -225,8 +225,11 @@ static bool
 invoke(NPObject* obj, NPIdentifier methodName, const NPVariant *args, uint32_t argCount, NPVariant *result) {
     char *name = browser->utf8fromidentifier(methodName);
     if(name) {
-        if(!strcmp(name, "helloworld")) {
-            return invokeDefault(obj, args, argCount, result);
+        if(!strcmp(name, "version")) {
+            result->type = NPVariantType_Int32;
+            result->value.intValue = BUILD_VERSION;
+            return true;
+            //return invokeDefault(obj, args, argCount, result);
         }
         else if (!strcmp(name, "doc2html"))
         {

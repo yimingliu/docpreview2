@@ -8,6 +8,8 @@
 #include <WebKit/npruntime.h>
 #include <WebKit/npfunctions.h>
 
+#define BUILD_VERSION 1
+
 NPError NP_Initialize(NPNetscapeFuncs *browserFuncs);
 NPError NP_GetEntryPoints(NPPluginFuncs *pluginFuncs);
 void    NP_Shutdown(void);
